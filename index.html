@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrossel de Imagens</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .carrossel {
+            position: relative;
+            width: 80%;
+            max-width: 600px;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+        }
+
+        .imagens {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .imagens img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .seta {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 1;
+        }
+
+        .seta-esquerda {
+            left: 10px;
+        }
+
+        .seta-direita {
+            right: 10px;
+        }
+
+        .indicadores {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .indicador {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .indicador.ativo {
+            background-color: rgba(255, 255, 255, 1);
+        }
+    </style>
+</head>
+<body>
+    <div class="carrossel">
+        <button class="seta seta-esquerda" onclick="mudarImagem(-1)">&#10094;</button>
+        <div class="imagens">
+            <img src="https://cdn.myportfolio.com/d887fdde-c880-4727-9782-b4de75083201/41d505b6-0866-464d-b581-f03967325aad_rw_1920.jpg?h=e75910c0b2791aba8a3c6e85df5a7a4e" alt="Imagem 1">
+            <img src="https://cdn.myportfolio.com/d887fdde-c880-4727-9782-b4de75083201/0b54ab28-bcb5-4fd2-8a33-3b7763cba011_rw_1920.jpg?h=58869f6491d14426f83e48f9bb4b4718" alt="Imagem 2">
+            <img src="https://cdn.myportfolio.com/d887fdde-c880-4727-9782-b4de75083201/0e9dbf4b-92ab-453d-99b6-61ca4c157e4f_rw_1920.jpg?h=6c49bf495dc756b2165f0e09fd765f3f" alt="Imagem 3">
+            <img src="https://cdn.myportfolio.com/d887fdde-c880-4727-9782-b4de75083201/33fb21fc-e63d-42d4-ae9a-3986e6c65961_rw_1920.jpg?h=984124e1cd71755f8bc7bf43752b38cd" alt="Imagem 4">
+        </div>
+        <button class="seta seta-direita" onclick="mudarImagem(1)">&#10095;</button>
+        
+        <!-- Indicadores de posição -->
+        <div class="indicadores">
+            <span class="indicador ativo" onclick="irParaImagem(0)"></span>
+            <span class="indicador" onclick="irParaImagem(1)"></span>
+            <span class="indicador" onclick="irParaImagem(2)"></span>
+            <span class="indicador" onclick="irParaImagem(3)"></span>
+        </div>
+    </div>
+
+    <script>
+        let indiceAtual = 0;
+        const imagens = document.querySelector('.imagens');
+        const totalImagens = document.querySelectorAll('.imagens img').length;
+        const indicadores = document.querySelectorAll('.indicador');
+
+        function mudarImagem(direcao) {
+            indiceAtual += direcao;
+
+            if (indiceAtual >= totalImagens) {
+                indiceAtual = 0;
+            } else if (indiceAtual < 0) {
+                indiceAtual = totalImagens - 1;
+            }
+
+            const offset = -indiceAtual * 100;
+            imagens.style.transform = `translateX(${offset}%)`;
+
+            indicadores.forEach((indicador, i) => {
+                if (i === indiceAtual) {
+                    indicador.classList.add('ativo');
+                } else {
+                    indicador.classList.remove('ativo');
+                }
+            });
+        }
+
+        function irParaImagem(indice) {
+            indiceAtual = indice;
+            const offset = -indiceAtual * 100;
+            imagens.style.transform = `translateX(${offset}%)`;
+
+            indicadores.forEach((indicador, i) => {
+                if (i === indiceAtual) {
+                    indicador.classList.add('ativo');
+                } else {
+                    indicador.classList.remove('ativo');
+                }
+            });
+        }
+
+        // Inicializa o carrossel com a primeira imagem visível
+        irParaImagem(0);
+    </script>
+</body>
+</html>
